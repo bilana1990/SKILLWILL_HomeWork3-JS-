@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Work 3</title>
+  </head>
+  <body>
+    <script>
+      //         დაწერე ფუნქცია, რომელიც პარამეტრად
+      // მიიღებს n ცალ რიცხვს (n > 2). ფუნქციამ
+      // უნდა დააბრუნოს 2 - ელემენტიანი მასივი,
+      // სადაც პირველი ელემენტია პირველი და
+      // მეორე პარამეტრის ჯამი, ხოლო მეორე
+      // ელემენტი - მესამე ელემენტიდან
+      // დაწყებული ყველა დანარჩენის ნამრავლი
+
+      function processNumbers(...numbers) {
+        if (numbers.length <= 2) {
+          throw new Error("The function requires more than 2 numbers.");
+        }
+
+        const sumFirstTwo = numbers[0] + numbers[1];
+        const productRest = numbers.slice(2).reduce((acc, num) => acc * num, 1);
+
+        return [sumFirstTwo, productRest];
+      }
+
+      // Usage example:
+      const result = processNumbers(1, 2, 3, 4, 5);
+      console.log(result); // Output: [3, 60]
+
+      //       დავუშვათ გვინდა ობიექტიდან წავიკითხოთ
+      // შემდეგი ველი: user.banks[2].address.city.
+      // დაწერე ფუნქცია, რომელიც პარამეტრად
+      // მიიღებს user ობიექტს და დააბრუნებს cityს. გამოიყენე destructuring-ი. თუ ასეთი
+      // ველი არ არსებობს უნდა დაბრუნდეს
+      // undefined
+
+      function getCityFromUser(user) {
+        const { banks } = user || {};
+        const { address } = banks?.[2] || {};
+        const { city } = address || {};
+
+        return city;
+      }
+
+      // Usage example:
+      const user = {
+        banks: [
+          { address: { city: "Tbilisi" } },
+          { address: { city: "Batumi" } },
+          { address: { city: "Kutaisi" } },
+        ],
+      };
+      console.log(getCityFromUser(user));
+
+      //       დაწერე ფუნქცია, რომელიც პარამეტრად
+      // მიიღებს ნებისმიერ ობიექტს და
+      // დააბრუნებს იგივე მნიშვნელობების მქონე
+      // ახალ (განსხვავებულ) ობიექტს
+
+      function cloneObject1(obj) {
+        return { ...obj };
+      }
+
+      // Usage example:
+      const originalObj1 = { name: "Alice", age: 30, city: "Tbilisi" };
+      const clonedObj1 = cloneObject1(originalObj1);
+
+      console.log(clonedObj1); // Output: { name: 'Alice', age: 30, city: 'Tbilisi' }
+      console.log(clonedObj1 === originalObj1); // Output: false (they are different objects)
+
+      //       გაითვალისწინე, რომ თუ ობიექტში კიდევ
+      // სხვა ობიექტებია იმათი ასლებიც უნდა
+      // შეიქმნას
+
+      function deepClone(obj) {
+        // Return primitive values as is
+        if (obj === null || typeof obj !== "object") {
+          return obj;
+        }
+
+        // Handle arrays
+        if (Array.isArray(obj)) {
+          const arrCopy = [];
+          for (const item of obj) {
+            arrCopy.push(deepClone(item));
+          }
+          return arrCopy;
+        }
+
+        // Handle objects
+        const objCopy = {};
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            objCopy[key] = deepClone(obj[key]);
+          }
+        }
+        return objCopy;
+      }
+
+      // Usage example:
+      const originalObj = {
+        name: "Alice",
+        age: 30,
+        address: {
+          city: "Tbilisi",
+          coordinates: { lat: 41.7151, lon: 44.8271 },
+        },
+        hobbies: ["reading", "hiking"],
+      };
+
+      const clonedObj = deepClone(originalObj);
+
+      console.log(clonedObj); // Output: { name: 'Alice', age: 30, address: { city: 'Tbilisi', coordinates: { lat: 41.7151, lon: 44.8271 } }, hobbies: ['reading', 'hiking'] }
+      console.log(clonedObj === originalObj); // Output: false (they are different objects)
+      console.log(clonedObj.address === originalObj.address); // Output: false (nested objects are also different)
+      console.log(clonedObj.hobbies === originalObj.hobbies); // Output: false (nested arrays are also different)
+    </script>
+  </body>
+</html>
